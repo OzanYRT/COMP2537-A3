@@ -2,6 +2,11 @@ const PAGE_SIZE = 10;
 let currentPage = 1;
 let pokemons = [];
 
+const updatePokemonCount = (displayed, total) => {
+  $('#pokemonCount').text(`Displaying ${displayed} of the ${total} pokemons`);
+};
+
+
 const updatePaginationDiv = (currentPage, numPages) => {
   $('#pagination').empty();
 
@@ -46,6 +51,8 @@ const updateDisplayInfo = (total, displayed) => {
 
 const paginate = async (currentPage, PAGE_SIZE, pokemons) => {
   selected_pokemons = pokemons.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  updatePokemonCount(selected_pokemons.length, pokemons.length);
 
   $('#pokemon').empty();
   selected_pokemons.forEach(async (pokemon) => {
@@ -113,6 +120,7 @@ const fetchPokemonTypes = async () => {
     paginate(currentPage, PAGE_SIZE, filteredPokemons);
     const numPages = Math.ceil(filteredPokemons.length / PAGE_SIZE);
     updatePaginationDiv(currentPage, numPages);
+    updatePokemonCount(filteredPokemons.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE).length, filteredPokemons.length);
   };
   
 //   updatePaginationDiv(currentPage, numPages);
